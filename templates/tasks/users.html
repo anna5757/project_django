@@ -1,0 +1,24 @@
+{% extends "tasks/base.html" %}
+{% load static %}
+{% block content %}
+
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Age</th>
+        <th scope="col">Photo</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+      <tr>
+        <td>{{ user.name }}</td>
+        <td>{{ user.age }}</td>
+          <td><img src="{% static user.src %}" alt="img"></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}
