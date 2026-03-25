@@ -1,16 +1,16 @@
  1.
-        task = Tasks.objects.bulk_create([
-        Tasks(name="task_1", description="Создать модель", status="completed", priority=5, created_at="2026-03-20", is_reopened=True, updated_at="2026-03-20"),
-   ...: Tasks(name="task_2", description="Заполнить таблицу задачами", status="completed", priority=5, created_at="2026-03-20", is_reopened=False, updated_at="2026-03-20")]),
-   ...: Tasks(name="task_3", description="Получить все задачи из БД", status="completed", priority=5, created_at="2026-03-20", is_reopened=False, updated_at="2026-03-20"),
-   ...: Tasks(name="task_4", description="Вывести список задач", status="completed", priority=4, created_at="2026-03-20", is_reopened=False, updated_at="2026-03-20"),
-   ...: Tasks(name="task_5", description="Найти все задачи со статусом created/started", status="created", priority=4, created_at="2026-03-20", is_reopened=True, updated_at="2026-03-22"),
-   ...: Tasks(name="task_6", description="Получить список задач", status="started", priority=3, created_at="2026-03-20", is_reopened=True, updated_at="2026-03-25"),
-   ...: Tasks(name="task_7", description="Отсортировать задачи по приоритету", status="failed", priority=2, created_at="2026-03-20", is_reopened=True, updated_at="2026-03-25"),
-   ...: Tasks(name="task_8", description="", status="canceled", priority=1, created_at="2026-03-20", is_reopened=False, updated_at="2026-03-23"),
-   ...: Tasks(name="task_9", description="", status="started", priority=2, created_at="2026-03-20", is_reopened=False, updated_at="2026-03-20"),
-   ...: Tasks(name="task_10", description="Найти все задачи у которых есть описание", status="completed", priority=5, created_at="2026-03-20", is_reopened=False, updated_at="2026-03-23")
-   ...: ])
+    tasks = Tasks.objects.bulk_create([
+        Tasks(name="task_1", description="Создать модель", status="completed", priority=5, is_reopened=True),
+        Tasks(name="task_2", description="Заполнить таблицу задачами", status="completed", priority=5),
+        Tasks(name="task_3", description="Получить все задачи из БД", status="completed", priority=5),
+        Tasks(name="task_4", description="Вывести список задач", status="completed", priority=4),
+        Tasks(name="task_5", description="Найти задачи created/started", status="created", priority=4, is_reopened=True),
+        Tasks(name="task_6", description="Получить список задач", status="started", priority=3, is_reopened=True),
+        Tasks(name="task_7", description="Отсортировать задачи", status="failed", priority=2, is_reopened=True),
+        Tasks(name="task_8", description="", status="canceled", priority=1),
+        Tasks(name="task_9", description="", status="started", priority=2),
+        Tasks(name="task_10", description="Есть описание", status="completed", priority=5),
+    ])
 2.
 Tasks.objects.all()
 
