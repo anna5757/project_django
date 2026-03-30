@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+from config.models import BaseModel
+
 class TaskStatus(models.TextChoices):
     CREATED = 'created'
     STARTED = 'started'
@@ -8,7 +10,7 @@ class TaskStatus(models.TextChoices):
     CANCELED = 'canceled'
     FAILED = 'failed'
 
-class Tasks(models.Model):
+class Tasks(BaseModel):
     name = models.CharField(
         max_length=64,
         unique=True,
@@ -33,21 +35,29 @@ class Tasks(models.Model):
         default=3,
         verbose_name="Приоритетность"
     )
-    created_at = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="Дата создания"
-    )
     is_reopened = models.BooleanField(
         default=False,
         verbose_name = "Переоткрывалась ли"
     )
-    updated_at = models.DateTimeField(
-        auto_now=True,
-        verbose_name="Дата обновления"
+    project = models.ForeignKey(
+        to="Projects",
+        related_name="tasks",
+        on_delete=models.CASCADE,
+        null=True
     )
-
+    assignee = models.ForeignKey(
+        to="account.User",
+        related_name="tasks",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
     class Meta:
         ordering = ["-priority","-created_at"]
         db_table = "tasks"
         verbose_name = "Задача"
         verbose_name_plural = "Задачи"
+
+
+    def __str__(self):
+        return self.name
