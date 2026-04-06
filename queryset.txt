@@ -1,0 +1,52 @@
+ 1.
+    tasks = Tasks.objects.bulk_create([
+        Tasks(name="task_1", description="Создать модель", status="completed", priority=5, is_reopened=True),
+        Tasks(name="task_2", description="Заполнить таблицу задачами", status="completed", priority=5),
+        Tasks(name="task_3", description="Получить все задачи из БД", status="completed", priority=5),
+        Tasks(name="task_4", description="Вывести список задач", status="completed", priority=4),
+        Tasks(name="task_5", description="Найти задачи created/started", status="created", priority=4, is_reopened=True),
+        Tasks(name="task_6", description="Получить список задач", status="started", priority=3, is_reopened=True),
+        Tasks(name="task_7", description="Отсортировать задачи", status="failed", priority=2, is_reopened=True),
+        Tasks(name="task_8", description="", status="canceled", priority=1),
+        Tasks(name="task_9", description="", status="started", priority=2),
+        Tasks(name="task_10", description="Есть описание", status="completed", priority=5),
+    ])
+2.
+Tasks.objects.all()
+
+3.
+Tasks.objects.values('name','status')
+
+4.
+Tasks.objects.filter(Q(status="created") | Q( status="started"))
+
+5.
+Tasks.objects.filter(priority=5).order_by('id')
+
+6.
+Tasks.objects.filter(is_reopened = True)
+
+7.
+Tasks.objects.filter(priority=5).order_by('-id').order_by('created_at')
+
+8.
+Tasks.objects.count()
+
+9.
+Tasks.objects.all().order_by('created_at').last()
+
+10.
+Tasks.objects.exclude(Q(status='completed') | Q(status='canceled'))
+
+11.
+Tasks.objects.exclude(description__in=["",None])
+
+12.
+Tasks.objects.values('status').annotate(total=Count('id'))
+
+13.
+total = Tasks.objects.count()
+completed = Tasks.objects.filter(status="completed").count()
+result = complete / total * 100
+result
+

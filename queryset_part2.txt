@@ -1,0 +1,14 @@
+1.  Tasks.objects.filter(comments__isnull=False).distinct()
+
+2.  Projects.objects.filter(project_detail__isnull=False)
+
+3.  Tasks.objects.filter(project=3)
+
+4.  Tasks.objects.filter(tags__name='Django')
+
+5.  Comments.objects.filter(Q(task__tags__name="Django") & Q(user=2) )
+
+6.  Projects.objects.filter(tasks__status='canceled')
+
+7.  user=User.objects.annotate(field = Count('comments')).filter(field__gt=2)
+    Tasks.objects.filter(comments__user__in=user)
