@@ -12,11 +12,11 @@
   </thead>
   <tbody>
     {% for user in users %}
-      <tr>
-        <td>{{ user.name }}</td>
-        <td>{{ user.age }}</td>
-          <td><img src="{% static user.src %}" alt="img"></td>
-      </tr>
+        <tr>
+            <td>
+                <a href="{% url 'user_tasks' user.id %}">{{ user.first_name }}</a>
+            </td>
+        </tr>
     {% endfor %}
   </tbody>
 </table>

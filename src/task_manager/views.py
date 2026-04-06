@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from task_manager.models import Tasks, Comments
+from account.models import User
 from django.http import HttpResponse
 # Create your views here.
 def index(request):
@@ -9,22 +11,18 @@ def home(request):
     return render(request, 'tasks/home.html')
 
 def tasks(request):
-    task = [
-        {"task_name": "Fix login bug", "status": "in progress", "priority": "high"},
-        {"task_name": "Create navbar", "status": "done", "priority": "medium"},
-        {"task_name": "Write tests", "status": "todo", "priority": "high"},
-        {"task_name": "Update documentation", "status": "todo", "priority": "low"},
-        {"task_name": "Deploy project", "status": "in progress", "priority": "medium"}
-    ]
-    context = {"task": task}
+    context = { "tasks": Tasks.objects.select_related("assignee").prefetch_related("tags","comments").all()}
     return render(request, 'tasks/tasks.html', context=context)
 
 def users(request):
-    users = [
-        {"name": "Alice", "age": 25, "src": 'user_2.jpg'},
-        {"name": "Bob", "age": 30, "src": 'user_1.jpg'},
-        {"name": "Charlie", "age": 28, "src": 'user_4.jpg'},
-        {"name": "Diana", "age": 22, "src": 'user_3.jpg'}
-    ]
-    context = {"users": users}
+    context = {"users": User.objects.all()}
     return render(request, 'tasks/users.html', context=context)
+
+def user_tasks(request, user_id):
+    user = User.objects.get(id=user_id)
+    tasks = Tasks.objects.filter(assignee=user)
+    context={
+        "tasks": tasks,
+        "user": user
+    }
+    return render(request, 'tasks/user_tasks.html', context=context)

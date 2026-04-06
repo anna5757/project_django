@@ -1,0 +1,28 @@
+{% extends "tasks/base.html" %}
+{% block content %}
+
+{% if tasks %}
+
+<style>
+    .margin{
+        margin-left:40px;
+    }
+    .margin_title{
+        margin-bottom: 20px;
+    }
+</style>
+
+<h3 class="margin margin_title"> У пользователя {{user.first_name}} {{user.last_name}}</h3>
+
+{% for task in tasks%}
+<div class="d-flex flex-row">
+    <p class="margin">по задаче {{task.name}} :</p>
+    <p>{{task.comments.count}} комментариев</p>
+</div>
+{% endfor %}
+
+{% else %}
+<p class="bold"> У пользователя {{user.first_name}} {{user.last_name}} пока нет задач</p>
+{%endif%}
+
+{% endblock %}
