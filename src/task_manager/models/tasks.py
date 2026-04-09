@@ -45,7 +45,8 @@ class Tasks(BaseModel):
         to="Projects",
         related_name="tasks",
         on_delete=models.CASCADE,
-        null=True
+        null=True,
+        blank=True
     )
     assignee = models.ForeignKey(
         to="account.User",

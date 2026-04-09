@@ -40,10 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
-    'task_manager',
     'django_extensions',
-    'account',
+    'debug_toolbar',
+    #applications
+    'task_manager.apps.TaskTrackerConfig',
+    'account.apps.AccountConfig',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +56,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'config.middleware.LoggerMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
