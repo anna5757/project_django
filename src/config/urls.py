@@ -20,5 +20,5 @@ from debug_toolbar.toolbar import debug_toolbar_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('task/', include('task_manager.urls')),
+    path('tasks/', include('task_manager.urls')),
 ]+ debug_toolbar_urls()

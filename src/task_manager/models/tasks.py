@@ -1,8 +1,8 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from config.models import BaseModel
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+#from django.db.models.signals import post_save
+#from django.dispatch import receiver
 
 class TaskStatus(models.TextChoices):
     CREATED = 'created'
@@ -12,7 +12,6 @@ class TaskStatus(models.TextChoices):
     FAILED = 'failed'
 
 class Tasks(BaseModel):
-    objects = None
     name = models.CharField(
         max_length=64,
         unique=True,
@@ -56,7 +55,7 @@ class Tasks(BaseModel):
         blank=True
     )
     class Meta:
-        ordering = ["-priority","-created_at"]
+        ordering = ["-created_at"]
         db_table = "tasks"
         verbose_name = "Задача"
         verbose_name_plural = "Задачи"
@@ -82,7 +81,7 @@ class EducationTasks(Tasks):
         return f"{self.name}"
 
 
-@receiver(post_save, sender=Tasks)
-def create_task_comment(instance, created, **kwargs):
-    if created:
-        instance.comments.create(message = "Task created")
+# @receiver(post_save, sender=Tasks)
+# def create_task_comment(instance, created, **kwargs):
+#     if created:
+#         instance.comments.create(message = "Task created")
