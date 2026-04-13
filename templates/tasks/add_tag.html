@@ -1,0 +1,15 @@
+{% extends "tasks/base.html" %}
+{% load static %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<style>
+</style>
+<form action="{% url 'add_tag' %}" method="post">
+    {% csrf_token %}
+    {{ form | crispy}}
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}
+
