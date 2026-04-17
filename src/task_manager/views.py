@@ -6,7 +6,6 @@ from django.http import HttpResponseRedirect
 from task_manager.forms import CommentForm, TasksForm, TagsForm
 from django.urls import reverse
 
-
 def index(request):
     data = {"header": "Hello World", 'message': 'welcome to python' }
     return render(request, 'tasks/base.html', context=data)

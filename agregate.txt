@@ -1,0 +1,26 @@
+1.  tasks = Tasks.objects.values("status").annotate(total = Count("status"))
+    for item in tasks:
+     ...:     print(item['status'], item['total'])
+2.  max_user = User.objects.annotate(count_task = Count("tasks")).order_by("-count_task")[:1]
+3.  tasks = Tasks.objects.annotate(sum = Count("comments"))
+    for item in tasks:
+     ...:     print(item.name, item.sum)
+4.  tasks = Tasks.objects.annotate(sum = Count("comments")).filter(sum__gt=3)
+5.  qr = User.objects.annotate(avg_prior=Avg("tasks__priority"))
+         for item in qr:
+     ...:     print(item.username, item.avg_prior)
+6.  sum_prior = Tags.objects.annotate(sum_p=Sum("tasks__priority"))
+        for item in sum_prior:
+     ...:     print(item.name, item.sum_p)
+
+7.  tasks = Tasks.objects.annotate(total_comments = Count("comments"),total_tags = Count("tags")).filter(total_comments__gt = F("total_tags"))
+8.  users = User.objects.annotate(coments_count = Count("tasks__comments")).order_by("coments_count")[:3]
+
+10. avg_prior =Tasks.objects.aggregate(avg = Avg("priority"))["avg"]
+    tasks = Tasks.objects.annotate(total_comments = Count("comments")).filter(Q(total_comments__gt = 5)&Q(priority__gt=avg_prior))
+
+9. 	tasks = Tasks.objects.raw("SELECT public.tasks.id,  name, COUNT(message) AS count_msg FROM public.tasks LEFT JOIN comments ON comments.task_id = public.tasks.id GROUP BY
+        ⋮  public.tasks.id, name ORDER BY count_msg DESC LIMIT 1 ")
+
+     for item in tasks:
+     ...:     print(item.name)

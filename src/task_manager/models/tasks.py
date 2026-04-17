@@ -85,3 +85,4 @@ class EducationTasks(Tasks):
 # def create_task_comment(instance, created, **kwargs):
 #     if created:
 #         instance.comments.create(message = "Task created")
+
