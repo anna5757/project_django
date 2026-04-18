@@ -1,10 +1,29 @@
 from django.shortcuts import render
-from task_manager.models import Tasks, Comments
+from task_manager.models import Tasks, Comments, Attachments
 from account.models import User
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from task_manager.forms import CommentForm, TasksForm, TagsForm
+from task_manager.forms import CommentForm, TasksForm, TagsForm, AttachmentsForm
 from django.urls import reverse
+
+from django.shortcuts import get_object_or_404
+from task_manager.add_attachment_from_exernal_path import add_attachment_from_external
+from django.core.paginator import Paginator
+
+def tasks(request):
+    tasks_qs = Tasks.objects.select_related("assignee").prefetch_related(
+        "tags",
+        "comments",
+        "attachments"
+    ).all()
+    paginator = Paginator(tasks_qs, 5)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    context = {
+        "tasks": page_obj,
+        "page_obj": page_obj,
+    }
+    return render(request, "tasks/tasks.html", context=context)
 
 def index(request):
     data = {"header": "Hello World", 'message': 'welcome to python' }
@@ -12,10 +31,6 @@ def index(request):
 
 def home(request):
     return render(request, 'tasks/home.html')
-
-def tasks(request):
-    context = { "tasks": Tasks.objects.select_related("assignee").prefetch_related("tags","comments").all()}
-    return render(request, 'tasks/tasks.html', context=context)
 
 def users(request):
     context = {"users": User.objects.all()}
@@ -29,7 +44,6 @@ def user_tasks(request, user_id):
         "user": user
     }
     return render(request, 'tasks/user_tasks.html', context=context)
-
 
 def add_comment_form(request):
     if request.method == 'POST':
@@ -91,3 +105,29 @@ def add_tag_form(request):
     return render(request, "tasks/add_tag.html", {"form": form})
 
 
+def create_attachment(request):
+
+    if request.method == "POST":
+
+        form = AttachmentsForm(request.POST,request.FILES)
+
+        if form.is_valid():
+
+            form.save()
+            return HttpResponseRedirect(reverse("tasks"))
+    else:
+        form = AttachmentsForm()
+
+    return render(request, "tasks/create_attachment.html", {"form": form})
+
+
+def add_attachment(request, task_id):
+    task = Tasks.objects.get(id=task_id)
+    file_path = r"C:\Users\Anna\Desktop\example.docx"
+    attachment = add_attachment_from_external(
+            task = task,
+            name = "Документ",
+            file_path = file_path
+        )
+    answer = f"Файл добавлен:{attachment.name}"
+    return HttpResponse(answer)

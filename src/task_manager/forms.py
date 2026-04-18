@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from account.models import User
-from task_manager.models import Tasks, Tags
+from task_manager.models import Tasks, Tags, Attachments
 from django.core.exceptions import ValidationError
 from django.forms import Textarea
 
@@ -43,3 +43,8 @@ class TagsForm(ModelForm):
     class Meta:
         model = Tags
         fields = ['name', 'tasks']
+
+class AttachmentsForm(ModelForm):
+    class Meta:
+        model = Attachments
+        fields = ["name","photo","task"]
