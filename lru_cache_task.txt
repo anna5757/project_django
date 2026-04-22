@@ -1,0 +1,9 @@
+In [25]: @lru_cache
+    ...: def sum_of_positive(tuple, i=0):
+    ...:     if i == len(tuple):
+    ...:         return 0
+    ...:     return (tuple[i] if tuple[i] > 0 else 0) + sum_positive(tuple, i + 1)
+    ...:
+
+In [26]: sum_of_positive((1,2,-1))
+Out[26]: 3

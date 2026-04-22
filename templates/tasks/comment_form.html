@@ -9,7 +9,7 @@
         background-color: darkgrey;
     }
 </style>
-<form action="{% url 'add_task' %}" method="post">
+<form action="{% url 'add_comment' %}" method="post">
     <div class="user"></div>
     {% csrf_token %}
     {{ form | crispy}}

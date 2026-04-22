@@ -1,24 +1,28 @@
 from django import forms
 from django.forms import ModelForm
 from account.models import User
-from task_manager.models import Tasks, Tags, Attachments
+from task_manager.models import Tasks, Tags, Attachments, Comments
 from django.core.exceptions import ValidationError
 from django.forms import Textarea
 
-class CommentForm(forms.Form):
-    user = forms.ModelChoiceField(
-        queryset=User.objects.all(),
-        label="user",
-    )
-    task = forms.ModelChoiceField(
-        queryset=Tasks.objects.all(),
-        label="user task"
-    )
-    message = forms.CharField(
-        label="Comments",
-        widget=forms.Textarea(),
-    )
-    user.widget.attrs.update({'class':'user'})
+# class CommentForm(forms.Form):
+#     user = forms.ModelChoiceField(
+#         queryset=User.objects.all(),
+#         label="user",
+#     )
+#     task = forms.ModelChoiceField(
+#         queryset=Tasks.objects.all(),
+#         label="user task"
+#     )
+#     message = forms.CharField(
+#         label="Comments",
+#         widget=forms.Textarea(),
+#     )
+#     user.widget.attrs.update({'class':'user'})
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comments
+        fields = ["user", "task", "message"]
 
 class TasksForm(ModelForm):
     class Meta:
@@ -34,7 +38,7 @@ class TasksForm(ModelForm):
         priority = cleaned_data.get("priority")
 
         if not description:
-            if priority > 2:
+            if priority is not None and priority > 2:
                 raise ValidationError(
                     "Приоритет для задач без описания не может быть больше 2"
                 )

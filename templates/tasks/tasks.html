@@ -1,7 +1,7 @@
 {% extends "tasks/base.html" %}
 
 {% block content %}
-
+<!--{% load cache %}-->
 <style>
 .table-emerald thead {
     background-color: #10b981;
@@ -24,7 +24,7 @@
 </style>
 
 <div class="container mt-4" style="max-width: 1000px;">
-
+<!--#{% cache 20 sidebar %}-->
 <table class="table table-bordered table-striped text-center table-emerald">
   <thead>
     <tr>
@@ -76,6 +76,7 @@
 
 </table>
 
+<!--{% endcache %}-->
     <!-- 🔽 ПАГИНАЦИЯ -->
 <div class="d-flex justify-content-center mt-4">
   <nav>

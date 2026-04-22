@@ -47,12 +47,15 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+   # "django.middleware.cache.UpdateCacheMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    #"django.middleware.cache.FetchFromCacheMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -152,3 +155,25 @@ INTERNAL_IPS = [
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+#
+# CACHES = {
+#     # "default": {
+#     #     "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+#     #     "LOCATION": "unique-snowflake",
+#     # }
+#     #  "default": {
+#     #      "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+#     #     "LOCATION": BASE_DIR.parent  / "cache",
+#     #  }
+#     # "default": {
+#     #     "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+#     #     "LOCATION": "cache_table",
+#     # }
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
