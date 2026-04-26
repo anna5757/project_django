@@ -134,3 +134,7 @@ dmypy.json
 # Static files
 
 static
+staticfiles
+postman
+.postman
+cache

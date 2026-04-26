@@ -15,5 +15,5 @@ urlpatterns = [
     path('add_tag', TagFormView.as_view(), name='add_tag'),
     path("create_attachment",AttachmentFormView.as_view(),name="create_attachment"),
     path('task/<int:task_id>/add_attach_external/', AddAttachmentView.as_view(), name='add_attach_external'),
-
+    path("api/", include("task_manager.v1.urls")),
 ]
