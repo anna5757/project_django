@@ -47,12 +47,16 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'crispy_forms',
     'crispy_bootstrap5',
+    "rest_framework",
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+   # "django.middleware.cache.UpdateCacheMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    #"django.middleware.cache.FetchFromCacheMiddleware",
     'django.middleware.csrf.CsrfViewMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -133,6 +137,14 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR.parent / "static/img",
 ]
+
+STATICFILES_DIRS = [
+    BASE_DIR.parent / "static/img",
+]
+STATIC_ROOT = BASE_DIR.parent / 'staticfiles'
+#media
+MEDIA_URL = '/media/'
+MEDIA_ROOT = 'media_files'
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -144,3 +156,38 @@ INTERNAL_IPS = [
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = 'bootstrap5'
+#
+# CACHES = {
+#     # "default": {
+#     #     "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+#     #     "LOCATION": "unique-snowflake",
+#     # }
+#     #  "default": {
+#     #      "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+#     #     "LOCATION": BASE_DIR.parent  / "cache",
+#     #  }
+#     # "default": {
+#     #     "BACKEND": "django.core.cache.backends.db.DatabaseCache",
+#     #     "LOCATION": "cache_table",
+#     # }
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://127.0.0.1:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Task tracker',
+    'DESCRIPTION': 'Your project description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # OTHER SETTINGS
+}

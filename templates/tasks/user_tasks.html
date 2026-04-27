@@ -1,6 +1,6 @@
 {% extends "tasks/base.html" %}
 {% block content %}
-
+{% load cache %}
 {% if tasks %}
 
 <style>
@@ -14,13 +14,14 @@
 
 <h3 class="margin margin_title"> У пользователя {{user.first_name}} {{user.last_name}}</h3>
 
-{% for task in tasks%}
-<div class="d-flex flex-row">
-    <p class="margin">по задаче {{task.name}} :</p>
-    <p>{{task.comments.count}} комментариев</p>
-</div>
+{% for task in tasks %}
+    {% cache 120 task task.id %}
+    <div class="d-flex flex-row">
+        <p class="margin">по задаче {{task.name}} :</p>
+        <p>{{task.comments.count}} комментариев</p>
+    </div>
+    {% endcache %}
 {% endfor %}
-
 {% else %}
 <p class="bold"> У пользователя {{user.first_name}} {{user.last_name}} пока нет задач</p>
 {%endif%}

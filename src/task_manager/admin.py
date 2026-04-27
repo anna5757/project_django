@@ -150,9 +150,19 @@ class ProjectsAdmin(admin.ModelAdmin):
 
     inlines = (ProjectDetailsInline,)
 
+
+class AttachmentsAdmin(admin.ModelAdmin):
+    list_display = ("name","task","display_photo","photo","secure_view")
+    @admin.display(description="Отображение картинки")
+    def display_photo(self, instance):
+        if instance.photo:
+            return mark_safe(f'<img src={ instance.photo.url } width=50/>')
+
+
+
 admin.site.register(Tasks,TasksAdmin)
 admin.site.register(Tags)
 admin.site.register(Projects,ProjectsAdmin)
 admin.site.register(ProjectsDetails)
 admin.site.register(Comments)
-admin.site.register(Attachments)
+admin.site.register(Attachments, AttachmentsAdmin)
