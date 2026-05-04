@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+from datetime import timedelta
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,13 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'debug_toolbar',
-    #applications
-    'task_manager.apps.TaskTrackerConfig',
-    'account.apps.AccountConfig',
     'crispy_forms',
     'crispy_bootstrap5',
     "rest_framework",
     'drf_spectacular',
+    'rest_framework.authtoken',
+    #applications
+    'task_manager.apps.TaskTrackerConfig',
+    'account.apps.AccountConfig',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
@@ -60,6 +63,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'config.middleware.LoggerMiddleware',
@@ -182,6 +186,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 REST_FRAMEWORK = {
     # YOUR SETTINGS
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        #'rest_framework.authentication.BasicAuthentication',
+        #'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ]
 }
 
 SPECTACULAR_SETTINGS = {
@@ -190,4 +203,17 @@ SPECTACULAR_SETTINGS = {
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
     # OTHER SETTINGS
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(
+        minutes=int(os.getenv("ACCESS_TOKEN_LIFETIME_MINUTES"))
+    ),
+    "REFRESH_TOKEN_LIFETIME": timedelta(
+        minutes=int(os.getenv('REFRESH_TOKEN_LIFETIME_MINUTES'))
+    ),
+
+    "ALGORITHM": os.getenv("JWT_ALGORITHM"),
+    "SIGNING_KEY": os.getenv("SECRET_KEY"),
+    "AUTH_HEADER_TYPES": ("JWT",),
 }

@@ -11,7 +11,7 @@ from rest_framework import mixins
 from rest_framework import generics
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from drf_spectacular.types import OpenApiTypes
-
+from rest_framework.permissions import IsAdminUser
 # @csrf_exempt
 # def tasks_list(request):
 #
@@ -150,6 +150,7 @@ class TaskListApiView(
 ):
     queryset = Tasks.objects.all()
     serializer_class = TaskSerializer
+    permission_classes = [IsAdminUser]
 
     @extend_schema(
         summary='Get all tasks',
@@ -178,7 +179,6 @@ class TaskDetailApiView(
 ):
     queryset = Tasks.objects.all()
     serializer_class = TaskSerializer
-
 
     @extend_schema(
         responses={200: TaskSerializer},
