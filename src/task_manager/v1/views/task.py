@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
@@ -12,6 +14,8 @@ from rest_framework import generics
 from drf_spectacular.utils import extend_schema, OpenApiParameter, OpenApiExample
 from drf_spectacular.types import OpenApiTypes
 from rest_framework.permissions import IsAdminUser
+from config.pagination import CustomPagination
+from rest_framework.permissions import IsAuthenticated
 # @csrf_exempt
 # def tasks_list(request):
 #
@@ -148,9 +152,19 @@ class TaskListApiView(
     mixins.CreateModelMixin,
     generics.GenericAPIView
 ):
-    queryset = Tasks.objects.all()
+    def get_queryset(self):
+        queryset = Tasks.objects.filter(assignee=self.request.user)
+        created_at_gte = self.request.query_params.get("created_at__gte")
+        created_at_lte = self.request.query_params.get("created_at__lte")
+        if created_at_gte:
+            queryset = queryset.filter(created_at__gte=created_at_gte)
+        if created_at_lte:
+            queryset = queryset.filter(created_at__lte=created_at_lte)
+        return queryset
+
     serializer_class = TaskSerializer
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAuthenticated]
+    pagination_class = CustomPagination
 
     @extend_schema(
         summary='Get all tasks',
@@ -177,7 +191,9 @@ class TaskDetailApiView(
     mixins.DestroyModelMixin,
     generics.GenericAPIView,
 ):
-    queryset = Tasks.objects.all()
+    def get_queryset(self):
+        user = self.request.user
+        return Tasks.objects.filter(assignee=user)
     serializer_class = TaskSerializer
 
     @extend_schema(
