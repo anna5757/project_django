@@ -19,6 +19,7 @@ from django.views.generic import TemplateView
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
 # def index_2(request):
 #     return HttpResponse(f"<h1>Hello World!</h1>")
@@ -48,7 +49,10 @@ class HomeMyTemplateView(TemplateView):
 #     return render(request, "tasks/tasks.html", context=context)
 # @method_decorator(cache_page(60 * 10),name='dispatch')
 class TasksView(ListView):
+#class TasksView(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     template_name = "tasks/tasks.html"
+    #login_url = "/account/login/"
+    #permission_required = 'task_manager.view_tasks'
     model = Tasks
     paginate_by = 5
     paginator_class = Paginator

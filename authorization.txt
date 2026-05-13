@@ -1,0 +1,36 @@
+1.
+user1 = User.objects.create_user('user_orm','user1@test.com')
+user1.is_staff = True
+perm_view_tasks = Permission.objects.get(codename='view_tasks')
+perm_change_tasks = Permission.objects.get(codename='change_tasks')
+user1.user_permissions.add(perm_view_tasks,perm_change_tasks)
+user1.save()
+user1.get_all_permissions()
+
+2.
+managers, _ = Group.objects.get_or_create(name='Managers')
+editors, _ = Group.objects.get_or_create(name='Editors')
+
+permis_for_manager_1 =  Permission.objects.get(id=37)
+permis_for_manager_2 =  Permission.objects.get(id=39)
+group_managers = Group.objects.get(id=2)
+group_managers.permissions.add(permis_for_manager_1, permis_for_manager_2)
+
+permis_for_editors =  Permission.objects.get(id=38)
+group_editos = Group.objects.get(id=3)
+group_editos.permissions.add(permis_for_editors)
+
+3.
+user = User.objects.create_user('user_admin','user_admin')
+user.is_staff = True
+user.is_active = True
+user.save()
+user.set_password('user_admin')
+user.save()
+
+permission_view_comment = Permission.objects.get(id=36)
+permission_add_comment = Permission.objects.get(id=33)
+permis_view_project = Permission.objects.get(id=40)
+permis_add_project = Permission.objects.get(id=37)
+user.user_permissions.add(permission_view_comment, permission_add_comment, permis_view_project, permis_add_project)
+user.user_permissions.all()
