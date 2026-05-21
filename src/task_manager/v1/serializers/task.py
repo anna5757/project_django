@@ -56,5 +56,3 @@ class TaskSerializer(serializers.Serializer):
         instance.assignee = validated_data.get("assignee", instance.assignee)
         instance.save()
         return instance
-
-
