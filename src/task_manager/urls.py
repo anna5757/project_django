@@ -6,7 +6,7 @@ from task_manager import views
 urlpatterns = [
     path("details/", MyView.as_view()),
     path('home', HomeMyTemplateView.as_view(), name='home'),
-    path('tasks', TasksView.as_view(), name = 'tasks'),
+    path('', TasksView.as_view(), name = 'tasks'),
     path('users', UserView.as_view(), name = 'users'),
     path('<int:user_id>', UserTasksView.as_view(), name = 'user_tasks'),
     path('add_comment', CommentFormView.as_view(), name='add_comment'),

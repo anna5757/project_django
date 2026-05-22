@@ -29,7 +29,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost","testserver"]
+INSTALLED_APPS = [
+    "django.contrib.admin",
+]
 
 
 # Application definition
@@ -101,6 +104,9 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST", "localhost"),
         "PORT": os.getenv("DB_PORT", "5432"),
+        'TEST': {
+            'NAME': os.getenv("DB_TEST_NAME", "test_task_tacker"),
+        }
     }
 }
 
