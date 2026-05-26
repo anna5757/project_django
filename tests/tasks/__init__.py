@@ -1,1 +1,1 @@
-from .test_task_view import TestStringMethods
+from .test_task_view import TestTaskView
