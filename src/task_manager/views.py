@@ -213,3 +213,4 @@ def run_long_task(request):
     return JsonResponse({
         "task_id": task.id
     })
+
