@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from task_manager.models import Tasks, Comments, Attachments
 from account.models import User
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponseRedirect
 from task_manager.forms import CommentForm, TasksForm, TagsForm, AttachmentsForm
 from django.urls import reverse
-
+from .tasks import add, mul
+from .tasks import long_task
 from django.shortcuts import get_object_or_404
 from task_manager.add_attachment_from_exernal_path import add_attachment_from_external
 from django.core.paginator import Paginator
@@ -21,6 +22,8 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_not_required
 # def index_2(request):
 #     return HttpResponse(f"<h1>Hello World!</h1>")
 
@@ -48,6 +51,8 @@ class HomeMyTemplateView(TemplateView):
 #     }
 #     return render(request, "tasks/tasks.html", context=context)
 # @method_decorator(cache_page(60 * 10),name='dispatch')
+
+# @method_decorator(login_not_required, name="dispatch")
 class TasksView(ListView):
 #class TasksView(PermissionRequiredMixin,LoginRequiredMixin,ListView):
     template_name = "tasks/tasks.html"
@@ -188,3 +193,24 @@ class AddAttachmentView(View):
         )
         answer = f"Файл добавлен:{attachment.name}"
         return HttpResponse(answer)
+
+
+def test_tasks(request):
+
+    add_task = add.delay(10, 20)
+
+    mul_task = mul.delay(5, 9)
+
+    return JsonResponse({
+        "add_task_id": add_task.id,
+        "mul_task_id": mul_task.id,
+    })
+
+def run_long_task(request):
+
+    task = long_task.delay()
+
+    return JsonResponse({
+        "task_id": task.id
+    })
+

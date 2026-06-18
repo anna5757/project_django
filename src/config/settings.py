@@ -29,7 +29,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost","testserver"]
+INSTALLED_APPS = [
+    "django.contrib.admin",
+]
 
 
 # Application definition
@@ -53,6 +56,8 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     'rest_framework_simplejwt',
     'django_filters',
+    'django_celery_results',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -101,6 +106,9 @@ DATABASES = {
         "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": os.getenv("DB_HOST", "localhost"),
         "PORT": os.getenv("DB_PORT", "5432"),
+        'TEST': {
+            'NAME': os.getenv("DB_TEST_NAME", "test_task_tacker"),
+        }
     }
 }
 
@@ -220,3 +228,23 @@ SIMPLE_JWT = {
     "SIGNING_KEY": os.getenv("SECRET_KEY"),
     "AUTH_HEADER_TYPES": ("JWT",),
 }
+
+# Celery Configuration Options
+CELERY_TIMEZONE = "Europe/Minsk"
+
+CELERY_TASK_TRACK_STARTED = True
+CELERY_TASK_SEND_SENT_EVENT = True
+CELERY_WORKER_SEND_TASK_EVENTS = True
+
+CELERY_TASK_TIME_LIMIT = 30 * 60
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379/0'
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_BROKER_TRANSPORT_OPTIONS = {
+    'visibility_timeout': 3600
+}
+
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
